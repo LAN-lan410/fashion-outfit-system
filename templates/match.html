@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能搭配 - 时尚穿搭系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- 页面自定义背景接口 -->
+    <style>
+        :root {
+            --bg-image: url('/static/images/bg_default.jpg');
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">✨ 时尚穿搭系统</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon text-white"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+    <li class="nav-item">
+        <a class="nav-link" href="/closet">智能衣橱</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/match">智能搭配</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/community">穿搭社区</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/tips">穿搭心得</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/profile">个人主页</a>
+    </li>
+                   <li class="nav-item">
+    <a class="nav-link" href="/weather">天气穿搭</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/calendar">穿搭日历</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/wishlist">愿望单</a>
+</li>
+    <li class="nav-item">
+        <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"></i> 登出</a>
+    </li>
+
+</ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 智能搭配内容 -->
+    <div class="match-container">
+        <!-- 提示信息 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- 搭配生成表单 -->
+        <div class="card match-form">
+            <div class="card-header">
+                <i class="bi bi-magic"></i> 生成智能搭配
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <label for="style" class="form-label">选择穿搭风格</label>
+                            <select class="form-control" id="style" name="style" required>
+                                <option value="">请选择风格</option>
+                                {% for style in style_options %}
+                                    <option value="{{ style }}">{{ style }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">
+                        <i class="bi bi-shuffle"></i> 生成搭配方案
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 搭配结果 -->
+        {% if match_result %}
+            <div class="match-result">
+                <h4 class="text-center text-primary mb-4">✨ 你的专属搭配方案 ✨</h4>
+                <div class="row">
+                    <!-- 方案A：上衣+下装 -->
+                    {% if match_result.A %}
+                        <div class="col-md-6 mb-4">
+                            <div class="card match-card">
+                                <h5>方案A：{{ match_result.A.type }}</h5>
+                                <img src="{{ match_result.A.top.img }}" alt="上衣">
+                                <p class="text-muted">上衣 | {{ match_result.A.top.style|join('、') }}</p>
+                                <img src="{{ match_result.A.bottom.img }}" alt="下装">
+                                <p class="text-muted">下装 | {{ match_result.A.bottom.style|join('、') }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!-- 方案B：裙子 -->
+                    {% if match_result.B %}
+                        <div class="col-md-6 mb-4">
+                            <div class="card match-card">
+                                <h5>方案B：{{ match_result.B.type }}</h5>
+                                <img src="{{ match_result.B.skirt.img }}" alt="裙子">
+                                <p class="text-muted">裙子 | {{ match_result.B.skirt.style|join('、') }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

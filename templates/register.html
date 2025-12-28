@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - 时尚穿搭系统</title>
+    <!-- 引入Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- 引入图标 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .register-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .register-header h3 {
+            color: #6c5ce7;
+            font-weight: bold;
+        }
+
+        .form-control:focus {
+            border-color: #6c5ce7;
+            box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+        }
+
+        .avatar-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #6c5ce7;
+            margin: 10px auto;
+            display: block;
+        }
+
+        .avatar-options {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .avatar-option {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid #ddd;
+            transition: all 0.3s;
+        }
+
+        .avatar-option:hover,
+        .avatar-option.selected {
+            border-color: #6c5ce7;
+            transform: scale(1.1);
+        }
+
+        .requirements {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .register-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container register-container card">
+        <div class="card-header">
+            <h3 class="text-center mb-0">✨ 欢迎加入时尚穿搭系统 ✨</h3>
+        </div>
+        <div class="card-body">
+            <!-- 提示信息 -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- 注册表单 -->
+            <form method="POST" id="registerForm">
+                <div class="mb-3">
+                    <label for="username" class="form-label">
+                        <i class="bi bi-person"></i> 用户名 <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="username" name="username" required
+                           placeholder="请输入3-20位字母或数字">
+                    <div class="requirements">用户名只能包含字母和数字，3-20个字符</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="nickname" class="form-label">
+                        <i class="bi bi-person-badge"></i> 昵称 <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="nickname" name="nickname" required
+                           placeholder="请输入您的昵称">
+                    <div class="requirements">昵称将显示在社区和个人主页中</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">
+                        <i class="bi bi-lock"></i> 密码 <span class="text-danger">*</span>
+                    </label>
+                    <input type="password" class="form-control" id="password" name="password" required
+                           placeholder="请输入6-30位密码">
+                    <div class="requirements">密码长度6-30位</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="confirm_password" class="form-label">
+                        <i class="bi bi-lock-fill"></i> 确认密码 <span class="text-danger">*</span>
+                    </label>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required
+                           placeholder="请再次输入密码">
+                </div>
+
+                <!-- 头像预览 -->
+                <div class="mb-3">
+                    <label class="form-label">
+                        <i class="bi bi-image"></i> 选择头像
+                    </label>
+                    <div class="text-center">
+                        <img id="avatarPreview" src="/static/images/avatar1.jpg" alt="头像预览" class="avatar-preview">
+                        <div class="avatar-options">
+                            <img src="/static/images/avatar1.jpg" alt="头像1" class="avatar-option selected" data-avatar="/static/images/avatar1.jpg">
+                            <img src="/static/images/avatar2.jpg" alt="头像2" class="avatar-option" data-avatar="/static/images/avatar2.jpg">
+                            <img src="/static/images/avatar3.jpg" alt="头像3" class="avatar-option" data-avatar="/static/images/avatar3.jpg">
+                            <img src="/static/images/avatar4.jpg" alt="头像4" class="avatar-option" data-avatar="/static/images/avatar4.jpg">
+                        </div>
+                        <input type="hidden" id="avatar" name="avatar" value="/static/images/avatar1.jpg">
+                    </div>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="agreeTerms" name="agreeTerms" required>
+                    <label class="form-check-label" for="agreeTerms">
+                        我已阅读并同意 <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">服务条款</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mb-3">
+                    <i class="bi bi-person-plus"></i> 注册账号
+                </button>
+
+                <div class="register-footer">
+                    <p class="text-muted">
+                        已有账号？ <a href="/" class="text-primary">立即登录</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 服务条款模态框 -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">服务条款</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>时尚穿搭系统用户协议</h6>
+                    <p>欢迎使用时尚穿搭系统！请仔细阅读以下条款：</p>
+
+                    <h6>1. 账号注册</h6>
+                    <ul>
+                        <li>用户需提供真实、准确的注册信息</li>
+                        <li>账号仅供个人使用，不得转让或出借</li>
+                        <li>用户需妥善保管账号密码，对账号活动负全责</li>
+                    </ul>
+
+                    <h6>2. 用户行为规范</h6>
+                    <ul>
+                        <li>遵守中国法律法规，不发布违法信息</li>
+                        <li>尊重他人，不进行人身攻击或骚扰</li>
+                        <li>不得上传侵犯他人知识产权的内容</li>
+                        <li>保持友善交流，共建良好社区氛围</li>
+                    </ul>
+
+                    <h6>3. 内容发布</h6>
+                    <ul>
+                        <li>用户可以分享穿搭心得、图片等内容</li>
+                        <li>内容需为原创或已获得授权</li>
+                        <li>系统有权审核和移除不当内容</li>
+                    </ul>
+
+                    <h6>4. 隐私保护</h6>
+                    <ul>
+                        <li>我们重视用户隐私，会保护个人信息安全</li>
+                        <li>不会在未获授权的情况下分享用户信息</li>
+                        <li>详细隐私政策请参阅相关文档</li>
+                    </ul>
+
+                    <h6>5. 责任声明</h6>
+                    <ul>
+                        <li>系统内容仅供参考，不构成专业建议</li>
+                        <li>用户需自行判断信息的准确性和适用性</li>
+                        <li>系统对用户个人决策不承担责任</li>
+                    </ul>
+
+                    <p class="text-muted mt-3">注册即表示您已阅读并同意以上条款。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 自定义JS -->
+    <script>
+        // 头像选择
+        document.querySelectorAll('.avatar-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // 移除所有选中状态
+                document.querySelectorAll('.avatar-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+
+                // 添加当前选中状态
+                this.classList.add('selected');
+
+                // 更新预览和隐藏输入框
+                const avatarUrl = this.getAttribute('data-avatar');
+                document.getElementById('avatarPreview').src = avatarUrl;
+                document.getElementById('avatar').value = avatarUrl;
+            });
+        });
+
+        // 密码验证
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+            if (password !== confirmPassword) {
+                alert('两次输入的密码不一致！');
+                event.preventDefault();
+                return false;
+            }
+
+            if (password.length < 6 || password.length > 30) {
+                alert('密码长度应在6-30位之间！');
+                event.preventDefault();
+                return false;
+            }
+
+            const username = document.getElementById('username').value;
+            if (username.length < 3 || username.length > 20) {
+                alert('用户名长度应在3-20位之间！');
+                event.preventDefault();
+                return false;
+            }
+
+            if (!/^[a-zA-Z0-9]+$/.test(username)) {
+                alert('用户名只能包含字母和数字！');
+                event.preventDefault();
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>

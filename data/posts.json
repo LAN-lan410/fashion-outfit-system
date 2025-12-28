@@ -1,0 +1,212 @@
+[
+  {
+    "id": 1,
+    "author": "stylefan",
+    "avatar": "/static/images/avatar2.jpg",
+    "nickname": "风格爱好者",
+    "content": "浅蓝棉服真的好清新！内搭格纹衬衫，再配咖色带刺绣的灯芯绒裤，温柔又治愈，冬日穿腻了黑白灰，这样搭真的眼前一亮，我太爱这个配色了",
+    "img": "/static/images/uploads/风格1.jpg",
+    "time": "2025-12-29 09:00:00",
+    "likes": 38,
+    "liked_by": [
+      "fashionista",
+      "minimalist"
+    ],
+    "comments": [
+      {
+        "author": "fashionista",
+        "nickname": "时尚达人",
+        "content": "这个配色真的绝了！浅蓝+咖色太温柔了～",
+        "time": "2025-12-29 09:15:00"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "author": "stylefan",
+    "avatar": "/static/images/avatar2.jpg",
+    "nickname": "风格爱好者",
+    "content": "尝试了下暗黑系休闲风，黑羽绒服搭焦糖色灯芯绒裤，颜色撞得还挺有感觉，再挂个条纹带、别个红扣子当点缀，沉闷的冬天也能穿出彩～",
+    "img": "/static/images/uploads/风格2.jpg",
+    "time": "2025-12-29 09:30:00",
+    "likes": 29,
+    "liked_by": [
+      "fashionista"
+    ],
+    "comments": []
+  },
+  {
+    "id": 3,
+    "author": "stylefan",
+    "avatar": "/static/images/avatar2.jpg",
+    "nickname": "风格爱好者",
+    "content": "冬日工装风安排上！军绿色派克棉服叠个格纹衬衫，同色系灯芯绒裤配撞色织带，又暖又酷，出门随便穿都不踩雷，我太喜欢这种帅帅的感觉了",
+    "img": "/static/images/uploads/风格3.jpg",
+    "time": "2025-12-29 10:00:00",
+    "likes": 42,
+    "liked_by": [
+      "minimalist"
+    ],
+    "comments": [
+      {
+        "author": "minimalist",
+        "nickname": "极简主义者",
+        "content": "工装风yyds！配色超协调～",
+        "time": "2025-12-29 10:20:00"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "author": "stylefan",
+    "avatar": "/static/images/avatar2.jpg",
+    "nickname": "风格爱好者",
+    "content": "谁能拒绝童趣风穿搭啊！黑卫衣印着可爱的苹果图案，配的裤子还有立体贴布，宽松版型穿起来贼舒服，甜酷甜酷的，我真的爱惨了",
+    "img": "/static/images/uploads/风格4.jpg",
+    "time": "2025-12-29 10:30:00",
+    "likes": 35,
+    "liked_by": [],
+    "comments": [
+      {
+        "author": "fashionista",
+        "nickname": "时尚达人",
+        "content": "棒",
+        "time": "2025-12-29 01:47:10"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "author": "stylefan",
+    "avatar": "/static/images/avatar2.jpg",
+    "nickname": "风格爱好者",
+    "content": "我这次搭的酒红卫衣也太戳我了！叠个红黑格纹衬衫立马有层次感，配阔腿裤松松垮垮的，再加点小装饰，美式街头那味儿一下就出来了",
+    "img": "/static/images/uploads/风格五.jpg",
+    "time": "2025-12-29 11:00:00",
+    "likes": 31,
+    "liked_by": [
+      "fashionista",
+      "minimalist"
+    ],
+    "comments": []
+  },
+  {
+    "id": 6,
+    "author": "fashionista",
+    "avatar": "/static/images/avatar1.jpg",
+    "nickname": "时尚达人",
+    "content": "韩系休闲感拉满的一套！卡其色短款夹克超显比例，内搭蓝格纹衬衫+白打底，层次感一下就出来了，配深色阔腿裙裤慵懒又随性，日常出门穿超合适",
+    "img": "/static/images/uploads/时尚1.jpg",
+    "time": "2025-12-29 14:00:00",
+    "likes": 45,
+    "liked_by": [
+      "stylefan"
+    ],
+    "comments": [
+      {
+        "author": "stylefan",
+        "nickname": "风格爱好者",
+        "content": "求夹克链接！太显比例了～",
+        "time": "2025-12-29 14:10:00"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "author": "fashionista",
+    "avatar": "/static/images/avatar1.jpg",
+    "nickname": "时尚达人",
+    "content": "秋冬氛围感拿捏了！棕色毛衣外搭毛绒马甲，同色系阔腿裤顺下来超和谐，温柔又软糯的感觉，怕冷星人这样穿又暖又好看～",
+    "img": "/static/images/uploads/时尚2.jpg",
+    "time": "2025-12-29 14:30:00",
+    "likes": 37,
+    "liked_by": [
+      "stylefan",
+      "minimalist"
+    ],
+    "comments": []
+  },
+  {
+    "id": 8,
+    "author": "fashionista",
+    "avatar": "/static/images/avatar1.jpg",
+    "nickname": "时尚达人",
+    "content": "温柔系冬日穿搭！卡其色羽绒马甲配白色针织内搭+百褶长裙，软乎乎的领口超可爱，再搭个贝雷帽，甜妹感直接拉满～",
+    "img": "/static/images/uploads/时尚3.jpg",
+    "time": "2025-12-29 15:00:00",
+    "likes": 48,
+    "liked_by": [
+      "minimalist"
+    ],
+    "comments": []
+  },
+  {
+    "id": 9,
+    "author": "fashionista",
+    "avatar": "/static/images/avatar1.jpg",
+    "nickname": "时尚达人",
+    "content": "灰色系同色系穿搭太高级了！羽绒马甲叠穿灰色连帽卫衣，下装搭同色阔腿裤，一身灰简约又显瘦，懒人出门这么搭准没错～",
+    "img": "/static/images/uploads/时尚4.jpg",
+    "time": "2025-12-29 15:30:00",
+    "likes": 33,
+    "liked_by": [],
+    "comments": [
+      {
+        "author": "stylefan",
+        "nickname": "风格爱好者",
+        "content": "懒人福音！我也超爱同色系穿搭～",
+        "time": "2025-12-29 15:40:00"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "author": "fashionista",
+    "avatar": "/static/images/avatar1.jpg",
+    "nickname": "时尚达人",
+    "content": "软fufu的羊羔毛外套谁不爱！奶黄色超显白，搭配黑色阔腿裤简约不单调，再斜挎个小熊包，可爱感直接翻倍",
+    "img": "/static/images/uploads/时尚5.jpg",
+    "time": "2025-12-29 16:00:00",
+    "likes": 51,
+    "liked_by": [
+      "stylefan",
+      "minimalist"
+    ],
+    "comments": []
+  },
+  {
+    "id": 11,
+    "author": "fashionista",
+    "avatar": "/static/images/avatar1.jpg",
+    "nickname": "时尚达人",
+    "content": "冬日清新感穿搭！浅蓝羽绒服打破沉闷，配米白色毛绒围巾温柔又保暖，搭灰色阔腿裤休闲又舒服，这个配色真的太戳我了",
+    "img": "/static/images/uploads/时尚6.jpg",
+    "time": "2025-12-29 16:30:00",
+    "likes": 44,
+    "liked_by": [
+      "stylefan"
+    ],
+    "comments": [
+      {
+        "author": "minimalist",
+        "nickname": "极简主义者",
+        "content": "浅蓝+米白yyds！清新又高级～",
+        "time": "2025-12-29 16:45:00"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "author": "fashionista",
+    "avatar": "/static/images/avatar1.jpg",
+    "nickname": "时尚达人",
+    "content": "白色大衣",
+    "img": "/static/images/uploads/post_fashionista_20251229004020_姚凤岚生活照.jpg",
+    "time": "2025-12-29 00:40:20",
+    "likes": 1,
+    "liked_by": [
+      "fashionista"
+    ],
+    "comments": []
+  }
+]

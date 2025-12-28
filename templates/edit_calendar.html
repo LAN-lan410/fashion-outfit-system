@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑穿搭记录 - 时尚穿搭系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-pink: #f8c8dc;
+            --secondary-pink: #f0a8c7;
+            --dark-pink: #e685a3;
+            --light-bg: #fff5f8;
+            --text-color: #5a4b51;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        /* 返回链接 */
+        .back-link {
+            color: var(--dark-pink);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        .back-link:hover {
+            color: var(--secondary-pink);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        /* 卡片容器 */
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(240, 168, 199, 0.12);
+            background-color: #fff;
+            overflow: hidden;
+        }
+        /* 顶部渐变条 */
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-pink), var(--secondary-pink));
+            border: none;
+            padding: 18px 25px;
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-body {
+            padding: 35px 25px;
+        }
+
+        /* 表单样式 */
+        .form-label {
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        .form-control, .form-select {
+            border: 1px solid #f0d1dc;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--secondary-pink);
+            box-shadow: 0 0 0 3px rgba(240, 168, 199, 0.15);
+            outline: none;
+        }
+
+        /* 风格选择框 */
+        .form-check-input {
+            border-color: #f0d1dc;
+        }
+        .form-check-input:checked {
+            background-color: var(--dark-pink);
+            border-color: var(--dark-pink);
+        }
+        .form-check-label {
+            font-size: 0.95rem;
+        }
+
+        /* 图片预览区（支持自由缩放） */
+        .image-preview-wrapper {
+            margin-top: 12px;
+            padding: 20px;
+            background-color: #fff9fc;
+            border: 1px solid #f0d1dc;
+            border-radius: 10px;
+        }
+        .preview-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .preview-btn {
+            padding: 4px 10px;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            border: 1px solid #f0d1dc;
+            background-color: #fff;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .preview-btn:hover {
+            background-color: var(--primary-pink);
+            color: #fff;
+            border-color: var(--secondary-pink);
+        }
+        /* 可缩放图片容器 */
+        .resizable-img-container {
+            width: 100%;
+            min-height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .resizable-img {
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            cursor: grab;
+            transition: transform 0.1s ease;
+        }
+        .resizable-img:active {
+            cursor: grabbing;
+        }
+        .preview-tip {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 10px;
+        }
+
+        /* 按钮组 */
+        .btn-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+        .btn {
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary-pink), var(--dark-pink));
+            border: none;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--dark-pink), var(--secondary-pink));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(230, 133, 163, 0.2);
+        }
+        .btn-secondary {
+            background-color: #fff;
+            border: 1px solid #f0d1dc;
+            color: var(--text-color);
+        }
+        .btn-secondary:hover {
+            background-color: #fff9fc;
+            border-color: var(--secondary-pink);
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .container {
+                margin: 30px auto;
+            }
+            .card-body {
+                padding: 25px 15px;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+            }
+            .resizable-img {
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 返回链接 -->
+        <a href="/calendar" class="back-link">
+            <i class="bi bi-arrow-left"></i> 返回穿搭日记
+        </a>
+
+        <!-- 编辑卡片 -->
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-pencil"></i> 编辑穿搭记录
+            </div>
+            <div class="card-body">
+                <form action="/calendar/edit/{{ outfit.id }}" method="POST" enctype="multipart/form-data">
+                    <!-- 日期选择 -->
+                    <div class="mb-4">
+                        <label for="outfit_date" class="form-label">记录日期</label>
+                        <input type="date" class="form-control" id="outfit_date" name="date" value="{{ outfit.date }}" required>
+                    </div>
+
+                    <!-- 风格选择 -->
+                    <div class="mb-4">
+                        <label class="form-label">穿搭风格 <span class="text-muted">(可多选)</span></label>
+                        <div class="d-flex flex-wrap gap-3">
+                            {% for style in style_options %}
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="styles" id="style_{{ style }}" 
+                                        value="{{ style }}" {% if style in outfit.styles %}checked{% endif %}>
+                                    <label class="form-check-label" for="style_{{ style }}">{{ style }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- 穿搭描述 -->
+                    <div class="mb-4">
+                        <label for="outfit_description" class="form-label">穿搭描述</label>
+                        <textarea class="form-control" id="outfit_description" name="description" rows="4" required>{{ outfit.description }}</textarea>
+                    </div>
+
+                    <!-- 天气/温度/心情 -->
+                    <div class="row mb-4 g-3">
+                        <div class="col-md-4">
+                            <label for="outfit_weather" class="form-label">
+                                <i class="bi bi-cloud-sun text-secondary-pink" style="color: var(--secondary-pink);"></i> 天气
+                            </label>
+                            <input type="text" class="form-control" id="outfit_weather" name="weather" 
+                                value="{{ outfit.weather }}" placeholder="如：晴、小雨">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="outfit_temperature" class="form-label">
+                                <i class="bi bi-thermometer-half" style="color: var(--secondary-pink);"></i> 温度 (°C)
+                            </label>
+                            <input type="text" class="form-control" id="outfit_temperature" name="temperature" 
+                                value="{{ outfit.temperature }}" placeholder="如：22~28">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="outfit_mood" class="form-label">
+                                <i class="bi bi-emoji-smile" style="color: var(--secondary-pink);"></i> 心情
+                            </label>
+                            <select class="form-select" id="outfit_mood" name="mood">
+                                {% for mood in mood_options %}
+                                    <option value="{{ mood.value }}" {% if outfit.mood == mood.text %}selected{% endif %}>
+                                        {{ mood.text }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 图片上传 & 可缩放预览 -->
+                    <div class="mb-3">
+                        <label for="outfit_image" class="form-label">
+                            <i class="bi bi-image" style="color: var(--secondary-pink);"></i> 穿搭图片
+                        </label>
+                        <input class="form-control" type="file" id="outfit_image" name="image" accept="image/*">
+                        
+                        {% if outfit.image_url %}
+                            <div class="image-preview-wrapper">
+                                <!-- 缩放控制按钮 -->
+                                <div class="preview-controls">
+                                    <button type="button" class="preview-btn" id="zoomOutBtn">- 缩小</button>
+                                    <button type="button" class="preview-btn" id="zoomResetBtn">重置大小</button>
+                                    <button type="button" class="preview-btn" id="zoomInBtn">放大 +</button>
+                                </div>
+                                <!-- 可缩放图片 -->
+                                <div class="resizable-img-container">
+                                    <img src="{{ outfit.image_url }}" class="resizable-img" id="previewImage" alt="当前穿搭图片">
+                                </div>
+                                <div class="preview-tip">
+                                    提示：也可鼠标滚轮缩放图片，拖拽调整位置
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- 提交按钮 -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+                            <i class="bi bi-x-circle"></i> 取消
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i> 保存修改
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入JS实现图片缩放 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 图片缩放功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const img = document.getElementById('previewImage');
+            if (!img) return;
+
+            // 初始缩放比例
+            let scale = 1;
+            const scaleStep = 0.1; // 每次缩放步长
+            const maxScale = 3;    // 最大缩放比例
+            const minScale = 0.5;  // 最小缩放比例
+
+            // 放大
+            document.getElementById('zoomInBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (scale < maxScale) {
+                    scale += scaleStep;
+                    updateImageScale();
+                }
+            });
+
+            // 缩小
+            document.getElementById('zoomOutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (scale > minScale) {
+                    scale -= scaleStep;
+                    updateImageScale();
+                }
+            });
+
+            // 重置
+            document.getElementById('zoomResetBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                scale = 1;
+                updateImageScale();
+            });
+
+            // 更新图片缩放
+            function updateImageScale() {
+                img.style.transform = `scale(${scale})`;
+            }
+
+            // 鼠标滚轮缩放
+            img.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                // 滚轮向上=放大，向下=缩小
+                if (e.deltaY < 0 && scale < maxScale) {
+                    scale += scaleStep;
+                } else if (e.deltaY > 0 && scale > minScale) {
+                    scale -= scaleStep;
+                }
+                updateImageScale();
+            });
+
+            // 拖拽图片（需要先缩放才能拖拽）
+            let isDragging = false;
+            let startX, startY, translateX = 0, translateY = 0;
+
+            img.addEventListener('mousedown', function(e) {
+                if (scale <= 1) return; // 原大小不允许拖拽
+                isDragging = true;
+                startX = e.clientX - translateX;
+                startY = e.clientY - translateY;
+                img.style.cursor = 'grabbing';
+            });
+
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                translateX = e.clientX - startX;
+                translateY = e.clientY - startY;
+                img.style.transform = `scale(${scale}) translate(${translateX}px, ${translateY}px)`;
+            });
+
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
+                img.style.cursor = 'grab';
+            });
+        });
+    </script>
+</body>
+</html>

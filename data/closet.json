@@ -1,0 +1,272 @@
+{
+  "fashionista": [
+
+    {
+      "id": 1,
+      "img": "/static/images/uploads/休闲裙子1.jpg",
+      "category": "裙子",
+      "style": ["休闲风"],
+      "upload_time": "2025-12-28 23:49:45"
+    },
+    {
+      "id": 2,
+      "img": "/static/images/uploads/fashionista_20251228235946_微信图片_20251228234148_1941_142.png",
+      "category": "下装",
+      "style": ["休闲风"],
+      "upload_time": "2025-12-28 23:49:45"
+    },
+    {
+      "id": 3,
+      "img": "/static/images/uploads/休闲裤子1.jpg",
+      "category": "下装",
+      "style": ["休闲风"],
+      "upload_time": "2025-12-28 23:49:46"
+    },
+    {
+      "id": 4,
+      "img": "/static/images/uploads/休闲裤子2.jpg",
+      "category": "下装",
+      "style": ["休闲风"],
+      "upload_time": "2025-12-28 23:49:46"
+    },
+    {
+      "id": 5,
+      "img": "/static/images/uploads/休闲裤子3.jpg",
+      "category": "下装",
+      "style": ["休闲风"],
+      "upload_time": "2025-12-28 23:49:46"
+    },
+    {
+      "id": 6,
+      "img": "/static/images/uploads/甜酷裙子.jpg",
+      "category": "裙子",
+      "style": ["甜酷风"],
+      "upload_time": "2025-12-28 23:49:47"
+    },
+    {
+      "id": 7,
+      "img": "/static/images/uploads/甜酷裤子1.jpg",
+      "category": "下装",
+      "style": ["甜酷风"],
+      "upload_time": "2025-12-28 23:49:47"
+    },
+    {
+      "id": 8,
+      "img": "/static/images/uploads/甜酷裤子2.jpg",
+      "category": "下装",
+      "style": ["甜酷风"],
+      "upload_time": "2025-12-28 23:49:47"
+    },
+    {
+      "id": 9,
+      "img": "/static/images/uploads/甜酷裤子3.jpg",
+      "category": "下装",
+      "style": ["甜酷风"],
+      "upload_time": "2025-12-28 23:49:47"
+    },
+    {
+      "id": 10,
+      "img": "/static/images/uploads/约会裙子1.jpg",
+      "category": "裙子",
+      "style": ["约会风"],
+      "upload_time": "2025-12-28 23:49:48"
+    },
+    {
+      "id": 11,
+      "img": "/static/images/uploads/约会裙子2.jpg",
+      "category": "裙子",
+      "style": ["约会风"],
+      "upload_time": "2025-12-28 23:49:48"
+    },
+    {
+      "id": 12,
+      "img": "/static/images/uploads/约会裤子1.jpg",
+      "category": "下装",
+      "style": ["约会风"],
+      "upload_time": "2025-12-28 23:49:48"
+    },
+    {
+      "id": 13,
+      "img": "/static/images/uploads/约会裤子2.jpg",
+      "category": "下装",
+      "style": ["约会风"],
+      "upload_time": "2025-12-28 23:49:48"
+    },
+    {
+      "id": 14,
+      "img": "/static/images/uploads/通勤裙子.jpg",
+      "category": "裙子",
+      "style": ["通勤风"],
+      "upload_time": "2025-12-28 23:49:49"
+    },
+    {
+      "id": 15,
+      "img": "/static/images/uploads/通勤裤子1.jpg",
+      "category": "下装",
+      "style": ["通勤风"],
+      "upload_time": "2025-12-28 23:49:49"
+    },
+    {
+      "id": 16,
+      "img": "/static/images/uploads/通勤裤子2.jpg",
+      "category": "下装",
+      "style": ["通勤风"],
+      "upload_time": "2025-12-28 23:49:49"
+    },
+
+    {
+      "id": 17,
+      "img": "/static/images/uploads/（甜酷）藏青色短袖t恤.jpg",
+      "category": "上衣",
+      "style": ["甜酷风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 18,
+      "img": "/static/images/uploads/（甜酷）粉色格子截短款毛衣.jpg",
+      "category": "上衣",
+      "style": ["甜酷风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 19,
+      "img": "/static/images/uploads/（甜酷）毛边开衫毛衣外套.jpg",
+      "category": "上衣",
+      "style": ["甜酷风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 20,
+      "img": "/static/images/uploads/（甜酷）拼色棒球服外套.jpg",
+      "category": "上衣",
+      "style": ["甜酷风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 21,
+      "img": "/static/images/uploads/（通勤）灯笼袖白色衬衫.jpg",
+      "category": "上衣",
+      "style": ["通勤风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 22,
+      "img": "/static/images/uploads/（通勤）短款宽松上衣.jpg",
+      "category": "上衣",
+      "style": ["通勤风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 23,
+      "img": "/static/images/uploads/（通勤）灰色针织开衫外套.jpg",
+      "category": "上衣",
+      "style": ["通勤风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 24,
+      "img": "/static/images/uploads/(通勤）马甲衬衫拼接假两件上衣.jpg",
+      "category": "上衣",
+      "style": ["通勤风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 25,
+      "img": "/static/images/uploads/（休闲）白色毛绒卫衣.jpg",
+      "category": "上衣",
+      "style": ["休闲风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 26,
+      "img": "/static/images/uploads/（休闲）连帽正肩卫衣.jpg",
+      "category": "上衣",
+      "style": ["休闲风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 27,
+      "img": "/static/images/uploads/（休闲）撞色polo领卫衣.jpg",
+      "category": "上衣",
+      "style": ["休闲风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 28,
+      "img": "/static/images/uploads/（约会）白色费尔岛复古菱格圆领毛衣.jpg",
+      "category": "上衣",
+      "style": ["约会风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 29,
+      "img": "/static/images/uploads/（约会）褐色针织毛衣外套.jpg",
+      "category": "上衣",
+      "style": ["约会风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 30,
+      "img": "/static/images/uploads/（约会）蓝色蝴蝶结针织开衫毛衣.jpg",
+      "category": "上衣",
+      "style": ["约会风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 31,
+      "img": "/static/images/uploads/（甜酷）泡泡袖方领连衣裙.jpg",
+      "category": "裙子",
+      "style": ["甜酷风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 32,
+      "img": "/static/images/uploads/（通勤）咖色皮长裙.jpg",
+      "category": "裙子",
+      "style": ["通勤风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 33,
+      "img": "/static/images/uploads/（通勤）学院风双层领红色连衣裙.jpg",
+      "category": "裙子",
+      "style": ["通勤风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 34,
+      "img": "/static/images/uploads/（休闲）秋冬毛呢格子半身裙.jpg",
+      "category": "裙子",
+      "style": ["休闲风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 35,
+      "img": "/static/images/uploads/（休闲）学院风公主裙斗篷制服.jpg",
+      "category": "裙子",
+      "style": ["休闲风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 36,
+      "img": "/static/images/uploads/（约会）蝴蝶结背带连衣裙.jpg",
+      "category": "裙子",
+      "style": ["约会风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 37,
+      "img": "/static/images/uploads/（约会）白色针织半身裙.jpg",
+      "category": "裙子",
+      "style": ["约会风"],
+      "upload_time": "2025-12-29 10:00:00"
+    },
+    {
+      "id": 38,
+      "img": "/static/images/uploads/（约会）中式女装斗篷外套连衣裙.jpg",
+      "category": "上衣",
+      "style": ["约会风"],
+      "upload_time": "2025-12-29 10:00:00"
+    }
+  ]
+}

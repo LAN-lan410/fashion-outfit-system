@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加心得 - 时尚穿搭系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --bg-image: url('/static/images/bg_default.jpg');
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">✨ 时尚穿搭系统</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon text-white"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/closet">智能衣橱</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/match">智能搭配</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/community">穿搭社区</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/tips">穿搭心得</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile">个人主页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"></i> 登出</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 添加心得表单 -->
+    <div class="container mt-4 form-container">
+        <!-- 提示信息 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="bi bi-journal-plus"></i> 记录穿搭心得</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">心得标题 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="title" name="title"
+                               placeholder="例如：冬季叠穿技巧、通勤穿搭要点..." required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="category" class="form-label">分类</label>
+                        <select class="form-control" id="category" name="category">
+                            <option value="">选择分类（可选）</option>
+                            <option value="穿搭技巧">穿搭技巧</option>
+                            <option value="搭配经验">搭配经验</option>
+                            <option value="购物心得">购物心得</option>
+                            <option value="风格灵感">风格灵感</option>
+                            <option value="保养建议">保养建议</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="content" class="form-label">详细内容 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="content" name="content" rows="8"
+                                  placeholder="请详细描述你的穿搭心得、技巧或经验..." required></textarea>
+                        <small class="text-muted">支持换行，建议详细描述你的穿搭经验</small>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="is_public" name="is_public">
+                        <label class="form-check-label" for="is_public">
+                            同时分享到社区（公开心得）
+                        </label>
+                        <small class="text-muted d-block">勾选后，这篇心得将同时发布到穿搭社区</small>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/tips" class="btn btn-secondary me-md-2">取消</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle"></i> 保存心得
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 写作提示 -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h6 class="mb-0"><i class="bi bi-lightbulb"></i> 写作提示</h6>
+            </div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li>可以记录你成功的搭配经验</li>
+                    <li>分享实用的穿搭技巧和窍门</li>
+                    <li>记录服装购买和保养的心得</li>
+                    <li>描述不同场合的着装要点</li>
+                    <li>分享颜色搭配和风格塑造的经验</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

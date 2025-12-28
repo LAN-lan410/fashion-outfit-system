@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>穿搭日历 - 时尚穿搭系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+    <!-- 在calendar.html的head中添加 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/zh-cn.js"></script>
+    <style>
+        :root {
+            --bg-image: url('/static/images/bg_default.jpg');
+        }
+
+        .calendar-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .calendar-toolbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .fc {
+            max-width: 100%;
+        }
+
+        .fc-toolbar-title {
+            font-size: 1.5rem !important;
+            font-weight: bold;
+        }
+
+        .fc-button {
+            background-color: #6c5ce7 !important;
+            border-color: #6c5ce7 !important;
+        }
+
+        .fc-button:hover {
+            background-color: #5b4fd8 !important;
+            border-color: #5b4fd8 !important;
+        }
+
+        .outfit-preview {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+
+        .calendar-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #6c5ce7;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .outfit-day {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .outfit-day:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">✨ 时尚穿搭系统</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon text-white"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/closet">智能衣橱</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/match">智能搭配</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/community">穿搭社区</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tips">穿搭心得</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/weather">天气穿搭</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/calendar">穿搭日历</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/wishlist">愿望单</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile">个人主页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"></i> 登出</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 穿搭日历内容 -->
+    <div class="container mt-4">
+        <!-- 提示信息 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- 工具条 -->
+        <div class="calendar-toolbar">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-0"><i class="bi bi-calendar-heart"></i> 我的穿搭日历</h4>
+                    <p class="mb-0">记录每日穿搭，打造专属风格档案</p>
+                </div>
+                <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addOutfitModal">
+                    <i class="bi bi-plus-circle"></i> 记录今日穿搭
+                </button>
+            </div>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="calendar-stats">
+            <div class="stat-card">
+                <div class="stat-number">{{ stats.total_days }}</div>
+                <div class="stat-label">已记录天数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ stats.this_month }}</div>
+                <div class="stat-label">本月穿搭</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ stats.most_used_style or '--' }}</div>
+                <div class="stat-label">最常风格</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ stats.last_record }}</div>
+                <div class="stat-label">上次记录</div>
+            </div>
+        </div>
+
+        <!-- 日历 -->
+        <div class="calendar-container mt-4">
+            <div id="calendar"></div>
+        </div>
+
+        <!-- 最近的穿搭记录 -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-clock-history"></i> 最近穿搭记录</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_outfits %}
+                <div class="row">
+                    {% for outfit in recent_outfits %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-100 outfit-day" onclick="viewOutfitDetail('{{ outfit.id }}')">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    {% if outfit.image %}
+                                    <img src="{{ outfit.image }}" alt="穿搭图片" class="outfit-preview">
+                                    {% else %}
+                                    <div class="outfit-preview bg-light d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-image text-muted" style="font-size: 1.5rem;"></i>
+                                    </div>
+                                    {% endif %}
+                                    <div>
+                                        <h6 class="mb-1">{{ outfit.date }}</h6>
+                                        <small class="text-muted">{{ outfit.weekday }}</small>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    {% for style in outfit.styles %}
+                                    <span class="badge bg-primary me-1">{{ style }}</span>
+                                    {% endfor %}
+                                </div>
+                                <p class="mb-2"><strong>搭配：</strong>{{ outfit.description }}</p>
+                                {% if outfit.weather %}
+                                <small class="text-muted">
+                                    <i class="bi bi-cloud"></i> {{ outfit.weather }}
+                                </small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="bi bi-calendar-x display-1 text-muted"></i>
+                    <h5 class="mt-3 text-muted">暂无穿搭记录</h5>
+                    <p class="text-muted">开始记录你的每日穿搭，打造个人风格档案</p>
+                    <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#addOutfitModal">
+                        <i class="bi bi-plus-circle"></i> 记录今日穿搭
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加穿搭记录模态框 -->
+    <div class="modal fade" id="addOutfitModal" tabindex="-1" aria-labelledby="addOutfitModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addOutfitModalLabel">记录今日穿搭</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="/calendar/add" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="outfit_date" class="form-label">日期</label>
+                            <input type="date" class="form-control" id="outfit_date" name="date"
+                                   value="{{ today }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="outfit_description" class="form-label">穿搭描述</label>
+                            <textarea class="form-control" id="outfit_description" name="description"
+                                      rows="3" placeholder="描述你的今日穿搭..." required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">穿搭风格</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for style in style_options %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="styles"
+                                           value="{{ style }}" id="style_{{ loop.index }}">
+                                    <label class="form-check-label" for="style_{{ loop.index }}">
+                                        {{ style }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="outfit_weather" class="form-label">天气情况</label>
+                            <select class="form-control" id="outfit_weather" name="weather">
+                                <option value="">选择天气</option>
+                                <option value="sunny">晴天</option>
+                                <option value="cloudy">多云</option>
+                                <option value="rainy">雨天</option>
+                                <option value="snowy">雪天</option>
+                                <option value="windy">大风</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="outfit_temp" class="form-label">温度 (°C)</label>
+                            <input type="number" class="form-control" id="outfit_temp" name="temperature"
+                                   placeholder="例如：25" step="0.1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="outfit_image" class="form-label">穿搭图片 (可选)</label>
+                            <input type="file" class="form-control" id="outfit_image" name="image" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">搭配心情</label>
+                            <div class="btn-group w-100" role="group">
+                                {% for mood in mood_options %}
+                                <input type="radio" class="btn-check" name="mood" id="mood_{{ loop.index }}"
+                                       value="{{ mood.value }}" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="mood_{{ loop.index }}">
+                                    <i class="{{ mood.icon }}"></i> {{ mood.text }}
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">保存记录</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 穿搭详情模态框 -->
+    <div class="modal fade" id="outfitDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">穿搭详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="outfitDetailContent">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入FullCalendar -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/zh-cn.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'zh-cn',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [
+                    {% for outfit in calendar_events %}
+                    {
+                        title: '{{ outfit.title }}',
+                        start: '{{ outfit.date }}',
+                        color: '{{ outfit.color }}',
+                        extendedProps: {
+                            id: '{{ outfit.id }}',
+                            description: '{{ outfit.description }}',
+                            image: '{{ outfit.image }}',
+                            styles: {{ outfit.styles|tojson }}
+                        }
+                    },
+                    {% endfor %}
+                ],
+                eventClick: function(info) {
+                    viewOutfitDetail(info.event.extendedProps.id);
+                },
+                dateClick: function(info) {
+                    document.getElementById('outfit_date').value = info.dateStr;
+                    const modal = new bootstrap.Modal(document.getElementById('addOutfitModal'));
+                    modal.show();
+                }
+            });
+            calendar.render();
+        });
+
+        function viewOutfitDetail(outfitId) {
+
+            const modal = new bootstrap.Modal(document.getElementById('outfitDetailModal'));
+            document.getElementById('outfitDetailContent').innerHTML = `
+                <div class="text-center">
+                    <p>加载穿搭详情...</p>
+                    <p>穿搭ID: ${outfitId}</p>
+                    <button class="btn btn-primary" onclick="editOutfit('${outfitId}')">编辑</button>
+                </div>
+            `;
+            modal.show();
+        }
+
+        function editOutfit(outfitId) {
+            alert('编辑功能开发中...');
+        }
+    </script>
+</body>
+</html>

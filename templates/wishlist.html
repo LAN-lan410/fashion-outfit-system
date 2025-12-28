@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>愿望单 - 时尚穿搭系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --bg-image: url('/static/images/bg_default.jpg');
+        }
+
+        .wishlist-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .wishlist-summary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .wishlist-card {
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .wishlist-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .wishlist-image {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .price-tag {
+            background: #ff6b6b;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .priority-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1;
+        }
+
+        .wishlist-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #6c5ce7;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .progress {
+            height: 8px;
+            margin: 10px 0;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .empty-wishlist {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .store-link {
+            color: #6c5ce7;
+            text-decoration: none;
+        }
+
+        .store-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">✨ 时尚穿搭系统</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon text-white"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/closet">智能衣橱</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/match">智能搭配</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/community">穿搭社区</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tips">穿搭心得</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/weather">天气穿搭</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/calendar">穿搭日历</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/wishlist">愿望单</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile">个人主页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"></i> 登出</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 愿望单内容 -->
+    <div class="container mt-4 wishlist-container">
+        <!-- 提示信息 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- 愿望单概要 -->
+        <div class="wishlist-summary">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2><i class="bi bi-heart"></i> 我的购物愿望单</h2>
+                    <p class="mb-0">收藏心仪单品，计划你的时尚投资</p>
+                </div>
+                <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addWishModal">
+                    <i class="bi bi-plus-lg"></i> 添加愿望
+                </button>
+            </div>
+        </div>
+
+        <!-- 统计信息 -->
+        <div class="wishlist-stats">
+            <div class="stat-item">
+                <div class="stat-number">{{ stats.total_items }}</div>
+                <div class="stat-label">愿望单品</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ stats.total_price if stats.total_price else '0' }}元</div>
+                <div class="stat-label">总预算</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ stats.purchased_items }}</div>
+                <div class="stat-label">已购物品</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ stats.high_priority }}</div>
+                <div class="stat-label">高优先级</div>
+            </div>
+        </div>
+
+        <!-- 预算进度 -->
+        {% if stats.budget %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5><i class="bi bi-wallet2"></i> 预算管理</h5>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>已购金额：{{ stats.purchased_price or 0 }}元</span>
+                    <span>总预算：{{ stats.budget }}元</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar"
+                         style="width: {{ (stats.purchased_price / stats.budget * 100) if stats.budget > 0 else 0 }}%">
+                    </div>
+                </div>
+                <small class="text-muted">剩余预算：{{ stats.budget - stats.purchased_price if stats.budget else 0 }}元</small>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- 筛选按钮 -->
+        <div class="filter-buttons">
+            <a href="/wishlist" class="btn btn-outline-primary">全部</a>
+            <a href="/wishlist?filter=high" class="btn btn-outline-danger">高优先级</a>
+            <a href="/wishlist?filter=medium" class="btn btn-outline-warning">中优先级</a>
+            <a href="/wishlist?filter=low" class="btn btn-outline-info">低优先级</a>
+            <a href="/wishlist?filter=unpurchased" class="btn btn-outline-secondary">未购买</a>
+            <a href="/wishlist?filter=purchased" class="btn btn-outline-success">已购买</a>
+        </div>
+
+        <!-- 愿望单品列表 -->
+        {% if wishlist_items %}
+        <div class="row">
+            {% for item in wishlist_items %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card wishlist-card">
+                    <!-- 优先级徽章 -->
+                    <div class="priority-badge">
+                        {% if item.priority == 'high' %}
+                            <span class="badge bg-danger">高优先级</span>
+                        {% elif item.priority == 'medium' %}
+                            <span class="badge bg-warning">中优先级</span>
+                        {% else %}
+                            <span class="badge bg-info">低优先级</span>
+                        {% endif %}
+                    </div>
+
+                <!-- 图片 -->
+{% if item.image_url %}
+  <img
+    src="{{ item.image_url }}"
+    class="wishlist-image"
+    alt="{{ item.name }}"
+    style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;"
+  >
+{% else %}
+  <!-- 自定义默认图片（替换成你自己的默认图路径） -->
+  <img
+    src="/static/images/wishlist/default-item.png"
+    class="wishlist-image"
+    alt="默认图片"
+    style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;"
+  >
+{% endif %}
+
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">{{ item.name }}</h5>
+                            {% if item.price %}
+                            <span class="price-tag">¥{{ item.price }}</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- 分类标签 -->
+                        <div class="mb-2">
+                            <span class="badge bg-secondary">{{ item.category }}</span>
+                            {% for style in item.styles %}
+                            <span class="badge bg-light text-dark">{{ style }}</span>
+                            {% endfor %}
+                        </div>
+
+                        <p class="card-text text-muted small">{{ item.description }}</p>
+
+                        <!-- 购买信息和链接 -->
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div>
+                                {% if item.purchased %}
+                                <span class="badge bg-success"><i class="bi bi-check-circle"></i> 已购买</span>
+                                {% else %}
+                                <span class="badge bg-secondary"><i class="bi bi-clock"></i> 待购买</span>
+                                {% endif %}
+                            </div>
+                            <div>
+                                {% if item.store_url %}
+                                <a href="{{ item.store_url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-link-45deg"></i> 查看商品
+                                </a>
+                                {% endif %}
+                                <button class="btn btn-sm btn-outline-secondary"
+                                        onclick="editWishItem('{{ item.id }}')">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 备注 -->
+                        {% if item.notes %}
+                        <div class="mt-2">
+                            <small class="text-muted"><i class="bi bi-chat-left"></i> {{ item.notes }}</small>
+                        </div>
+                        {% endif %}
+
+                        <!-- 添加时间 -->
+                        <div class="mt-2">
+                            <small class="text-muted">
+                                <i class="bi bi-calendar"></i> {{ item.created_at }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <!-- 空愿望单 -->
+        <div class="card">
+            <div class="card-body empty-wishlist">
+                <div class="empty-icon">
+                    <i class="bi bi-heart"></i>
+                </div>
+                <h4 class="text-muted">愿望单空空如也</h4>
+                <p class="text-muted">开始收藏你心仪的单品吧！</p>
+                <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addWishModal">
+                    <i class="bi bi-plus-circle"></i> 添加第一个愿望
+                </button>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- 购买建议 -->
+        {% if wishlist_items %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-lightbulb"></i> 购买建议</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>性价比建议：</h6>
+                        <ul>
+                            <li>优先购买百搭基础款</li>
+                            <li>季节性单品可在换季时购买</li>
+                            <li>关注大促活动的价格变动</li>
+                            <li>考虑单品的穿着频率</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>搭配建议：</h6>
+                        <ul>
+                            <li>优先购买能搭配已有衣橱的单品</li>
+                            <li>考虑色彩搭配的协调性</li>
+                            <li>根据使用场合选择单品</li>
+                            <li>注意材质的多样性</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- 添加愿望单品模态框 -->
+    <div class="modal fade" id="addWishModal" tabindex="-1" aria-labelledby="addWishModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addWishModalLabel">添加愿望单品</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="/wishlist/add">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="item_name" class="form-label">单品名称 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="item_name" name="name"
+                                       placeholder="例如：白色衬衫、牛仔裤..." required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="item_category" class="form-label">品类 <span class="text-danger">*</span></label>
+                                <select class="form-control" id="item_category" name="category" required>
+                                    <option value="">选择品类</option>
+                                    <option value="上衣">上衣</option>
+                                    <option value="下装">下装</option>
+                                    <option value="裙子">裙子</option>
+                                    <option value="外套">外套</option>
+                                    <option value="鞋子">鞋子</option>
+                                    <option value="配饰">配饰</option>
+                                    <option value="包包">包包</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="item_price" class="form-label">价格 (元)</label>
+                                <input type="number" class="form-control" id="item_price" name="price"
+                                       placeholder="例如：299" step="0.01" min="0">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="item_priority" class="form-label">优先级</label>
+                                <select class="form-control" id="item_priority" name="priority">
+                                    <option value="low">低优先级</option>
+                                    <option value="medium" selected>中优先级</option>
+                                    <option value="high">高优先级</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="item_description" class="form-label">单品描述</label>
+                            <textarea class="form-control" id="item_description" name="description"
+                                      rows="3" placeholder="描述单品的款式、材质、特点等..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">风格标签 (可选)</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for style in style_options %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="styles"
+                                           value="{{ style }}" id="wish_style_{{ loop.index }}">
+                                    <label class="form-check-label" for="wish_style_{{ loop.index }}">
+                                        {{ style }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="item_store_url" class="form-label">商品链接</label>
+                                <input type="url" class="form-control" id="item_store_url" name="store_url"
+                                       placeholder="https://...">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="item_image_url" class="form-label">图片链接</label>
+                                <input type="url" class="form-control" id="item_image_url" name="image_url"
+                                       placeholder="https://...">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="item_notes" class="form-label">备注</label>
+                            <textarea class="form-control" id="item_notes" name="notes"
+                                      rows="2" placeholder="购买注意事项、尺码建议等..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">添加到愿望单</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 编辑愿望单品
+        function editWishItem(itemId) {
+            // 这里可以添加编辑功能
+            alert('编辑功能开发中...');
+        }
+
+        // 设置预算
+        function setBudget() {
+            const budget = prompt('请输入您的月预算金额（元）：', '{{ stats.budget or 0 }}');
+            if (budget !== null && budget !== '') {
+                // 这里可以添加AJAX请求设置预算
+                window.location.href = `/wishlist/set_budget?budget=${budget}`;
+            }
+        }
+
+        // 标记为已购买
+        function markAsPurchased(itemId) {
+            if (confirm('确认标记为已购买？')) {
+                // 这里可以添加AJAX请求
+                window.location.href = `/wishlist/purchase/${itemId}`;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>穿搭社区 - 时尚穿搭系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- 页面自定义背景接口 -->
+    <style>
+        :root {
+            --bg-image: url('/static/images/bg_default.jpg');
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">✨ 时尚穿搭系统</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon text-white"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+    <li class="nav-item">
+        <a class="nav-link" href="/closet">智能衣橱</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/match">智能搭配</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/community">穿搭社区</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/tips">穿搭心得</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/profile">个人主页</a>
+    </li>
+                 <li class="nav-item">
+    <a class="nav-link" href="/weather">天气穿搭</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/calendar">穿搭日历</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/wishlist">愿望单</a>
+</li>
+    <li class="nav-item">
+        <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"></i> 登出</a>
+    </li>
+
+</ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 社区内容 -->
+    <div class="community-container">
+        <!-- 提示信息 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- 发布动态 -->
+        <div class="card post-form">
+            <div class="card-header">
+                <i class="bi bi-pencil-square"></i> 发布新动态
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="post_content" class="form-label">分享你的穿搭心得</label>
+                        <textarea class="form-control" id="post_content" name="post_content" rows="3" required
+                                  placeholder="今天穿了什么？有什么穿搭技巧想分享？"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="post_file" class="form-label">穿搭图片 (可选)</label>
+                        <input type="file" class="form-control" id="post_file" name="post_file" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-send"></i> 发布动态
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 动态列表 -->
+        {% if posts %}
+            {% for post in posts %}
+                <div class="card post-card">
+                    <div class="post-header">
+                        <img src="{{ post.avatar }}" alt="头像" class="post-avatar">
+                        <div class="post-author">
+                            <div class="post-nickname">{{ post.nickname }}</div>
+                            <div class="post-time">{{ post.time }}</div>
+                        </div>
+                    </div>
+                    <div class="post-content">{{ post.content }}</div>
+                    {% if post.img %}
+                        <img src="{{ post.img }}" alt="动态图片" class="post-img">
+                    {% endif %}
+                    <div class="post-actions">
+                        <!-- 点赞表单 -->
+                        <form id="like-form-{{ post.id }}" method="POST" style="display: inline;">
+                            <input type="hidden" name="like_post_id" value="{{ post.id }}">
+                            <div class="like-btn" data-post-id="{{ post.id }}">
+                                <i class="bi bi-heart-fill"></i> 点赞 ({{ post.likes }})
+                            </div>
+                        </form>
+                        <!-- 评论按钮 -->
+                        <div class="comment-btn" data-post-id="{{ post.id }}">
+                            <i class="bi bi-chat-fill"></i> 评论 ({{ post.comments|length }})
+                        </div>
+                    </div>
+                    <!-- 评论框 -->
+                    <div id="comment-box-{{ post.id }}" class="comment-box">
+                        <form method="POST">
+                            <input type="hidden" name="comment_post_id" value="{{ post.id }}">
+                            <div class="mb-3">
+                                <textarea class="form-control" name="comment_content" rows="2" required
+                                          placeholder="写下你的评论..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-light btn-sm">发布评论</button>
+                        </form>
+                        <!-- 评论列表 -->
+                        <div class="comments-list mt-3">
+                            {% for comment in post.comments %}
+                                <div class="comment-item">
+                                    <div class="comment-author">{{ comment.nickname }}</div>
+                                    <div class="comment-time">{{ comment.time }}</div>
+                                    <div class="comment-content">{{ comment.content }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="card">
+                <div class="card-body text-center text-muted">
+                    <i class="bi bi-chat-dots"></i> 社区暂无动态，快来发布第一条动态吧！
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

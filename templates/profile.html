@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人主页 - 时尚穿搭系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-pink: #f472b6;
+            --secondary-pink: #f9a8d4;
+            --light-pink: #fef2f2;
+            --dark-pink: #be185d;
+            --accent-pink: #ec4899;
+            --text-dark: #374151;
+            --card-shadow: 0 8px 24px rgba(244, 114, 182, 0.08);
+            --hover-shadow: 0 12px 28px rgba(244, 114, 182, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background-color: var(--light-pink);
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            color: var(--text-dark);
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-pink) 100%) !important;
+            box-shadow: 0 4px 20px rgba(244, 114, 182, 0.15);
+            padding: 0.8rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+
+        .nav-link.active {
+            border-bottom: 2px solid white;
+        }
+
+        /* 卡片样式 */
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            background: white;
+        }
+
+        .card:hover {
+            box-shadow: var(--hover-shadow);
+            transform: translateY(-4px);
+        }
+
+        /* 头像样式 */
+        .avatar-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 4px 12px rgba(244, 114, 182, 0.2);
+        }
+
+        .avatar-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-pink);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(244, 114, 182, 0.3);
+            transition: var(--transition);
+        }
+
+        .avatar-edit:hover {
+            background: var(--accent-pink);
+            transform: scale(1.1);
+        }
+
+        /* 按钮样式 */
+        .btn-pink {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-pink) 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            padding: 8px 20px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-pink:hover {
+            background: linear-gradient(135deg, var(--accent-pink) 0%, var(--dark-pink) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 114, 182, 0.2);
+        }
+
+        /* 个人信息样式 */
+        .info-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #fce7f3;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--light-pink);
+            color: var(--primary-pink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .signature {
+            background: var(--light-pink);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 3px solid var(--primary-pink);
+        }
+
+        /* 动态卡片样式 */
+        .post-card {
+            border-radius: 12px;
+            border: 1px solid #fce7f3;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .post-header {
+            padding: 12px 15px;
+            background: var(--light-pink);
+            display: flex;
+            align-items: center;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .post-content {
+            padding: 15px;
+        }
+
+        .post-img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .post-actions {
+            padding: 10px 15px;
+            border-top: 1px solid #fce7f3;
+            display: flex;
+            gap: 20px;
+        }
+
+        .action-btn {
+            color: var(--text-dark);
+            border: none;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            color: var(--primary-pink);
+        }
+
+        /* 评论区样式 - 新增 */
+        .comments-section {
+            padding: 10px 15px;
+            border-top: 1px solid #fce7f3;
+            background: #fff9fb;
+            display: none;
+        }
+
+        .comments-section.show {
+            display: block;
+        }
+
+        .comment-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #fce7f3;
+        }
+
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .comment-author {
+            font-weight: 500;
+            color: var(--dark-pink);
+        }
+
+        .comment-time {
+            font-size: 0.85rem;
+            color: #9ca3af;
+        }
+
+        .comment-content {
+            line-height: 1.5;
+        }
+
+        .no-comments {
+            text-align: center;
+            padding: 15px 0;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        /* 评论输入框 - 新增 */
+        .comment-form {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #fce7f3;
+        }
+
+        .comment-input {
+            width: 100%;
+            border: 1px solid #fce7f3;
+            border-radius: 8px;
+            padding: 8px 12px;
+            resize: none;
+            height: 60px;
+            margin-bottom: 10px;
+        }
+
+        .comment-input:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+        }
+
+        .comment-submit {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-sm-pink {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 5px 15px;
+            font-size: 0.85rem;
+        }
+
+        .btn-sm-pink:hover {
+            background: var(--accent-pink);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-star-fill"></i> 时尚穿搭系统
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon text-white"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/closet">智能衣橱</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/match">智能搭配</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/community">穿搭社区</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/tips">穿搭心得</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/weather">天气穿搭</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/calendar">穿搭日历</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/wishlist">愿望单</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/profile">个人主页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"></i> 登出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 个人主页内容 -->
+    <div class="container mt-5">
+        <!-- 提示信息 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row">
+            <!-- 左侧个人信息卡片 -->
+            <div class="col-lg-4 mb-4">
+                <div class="card p-4 text-center">
+                    <!-- 头像区域 -->
+                    <div class="avatar-container mb-3">
+                        <img src="{{ user.avatar }}" alt="头像" class="avatar-img">
+                        <a href="{{ url_for('edit_profile') }}" class="avatar-edit">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                    </div>
+
+                    <!-- 用户名 -->
+                    <h3 class="mb-2" style="color: var(--dark-pink);">{{ user.nickname }}</h3>
+                    
+                    <!-- 个性签名 -->
+                    <div class="signature">
+                        <i class="bi bi-quote-left text-muted me-2"></i>
+                        {{ user.intro or "还没有设置个性签名哦～" }}
+                    </div>
+
+                    <!-- 数据统计 -->
+                    <div class="row mt-4 text-center">
+                        <div class="col-4">
+                            <h5 style="color: var(--primary-pink);">{{ user.fans }}</h5>
+                            <p class="text-muted small">粉丝</p>
+                        </div>
+                        <div class="col-4">
+                            <h5 style="color: var(--primary-pink);">{{ user.follow }}</h5>
+                            <p class="text-muted small">关注</p>
+                        </div>
+                        <div class="col-4">
+                            <h5 style="color: var(--primary-pink);">{{ user.posts|length }}</h5>
+                            <p class="text-muted small">动态</p>
+                        </div>
+                    </div>
+
+                    <!-- 编辑资料按钮 -->
+                    <a href="{{ url_for('edit_profile') }}" class="btn btn-pink mt-3">
+                        <i class="bi bi-pencil-square me-1"></i> 编辑个人资料
+                    </a>
+                </div>
+            </div>
+
+            <!-- 右侧我的动态 -->
+            <div class="col-lg-8">
+                <div class="card p-4">
+                    <h4 class="mb-4" style="color: var(--dark-pink);">
+                        <i class="bi bi-person-circle me-2"></i> 我的动态
+                    </h4>
+
+                    {% if user_posts %}
+                        {% for post in user_posts %}
+                            <div class="post-card" id="post-{{ post.id }}">
+                                <div class="post-header">
+                                    <img src="{{ post.avatar }}" alt="头像" class="post-avatar">
+                                    <div>
+                                        <div class="fw-bold">{{ post.nickname }}</div>
+                                        <div class="text-muted small">{{ post.time }}</div>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>{{ post.content }}</p>
+                                    {% if post.img %}
+                                        <img src="{{ post.img }}" alt="动态图片" class="post-img">
+                                    {% endif %}
+                                </div>
+                                <div class="post-actions">
+                                    <!-- 点赞按钮 -->
+                                    <form action="{{ url_for('community') }}" method="POST" style="display: inline;">
+                                        <input type="hidden" name="like_post_id" value="{{ post.id }}">
+                                        <button type="submit" class="action-btn">
+                                            <i class="bi bi-heart{% if session.username in post.liked_by %}-fill text-danger{% endif %}"></i>
+                                            <span>{{ post.likes }}</span>
+                                        </button>
+                                    </form>
+                                    
+                                    <!-- 评论按钮 - 新增点击事件 -->
+                                    <button class="action-btn comment-toggle" data-post-id="{{ post.id }}">
+                                        <i class="bi bi-chat"></i>
+                                        <span>{{ post.comments|length }}</span>
+                                    </button>
+                                </div>
+
+                                <!-- 评论区 - 新增 -->
+                                <div class="comments-section" id="comments-{{ post.id }}">
+                                    {% if post.comments %}
+                                        {% for comment in post.comments %}
+                                            <div class="comment-item">
+                                                <div class="comment-header">
+                                                    <span class="comment-author">{{ comment.nickname }}</span>
+                                                    <span class="comment-time">{{ comment.time }}</span>
+                                                </div>
+                                                <div class="comment-content">{{ comment.content }}</div>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="no-comments">暂无评论，快来抢沙发吧～</div>
+                                    {% endif %}
+
+                                    <!-- 评论输入框 - 新增 -->
+                                    <div class="comment-form">
+                                        <form action="{{ url_for('community') }}" method="POST">
+                                            <input type="hidden" name="comment_post_id" value="{{ post.id }}">
+                                            <textarea class="comment-input" name="comment_content" placeholder="写下你的评论..." required></textarea>
+                                            <div class="comment-submit">
+                                                <button type="submit" class="btn-sm-pink">发布评论</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="bi bi-pen-fancy text-muted fs-1 mb-3"></i>
+                            <p class="text-muted">暂无动态，快去社区分享你的穿搭吧～</p>
+                            <a href="/community" class="btn btn-pink">
+                                <i class="bi bi-plus-circle me-1"></i> 发布动态
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 评论展开/收起功能 - 新增
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有评论切换按钮
+            const commentToggles = document.querySelectorAll('.comment-toggle');
+            
+            commentToggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    // 获取对应的评论区ID
+                    const postId = this.getAttribute('data-post-id');
+                    const commentsSection = document.getElementById(`comments-${postId}`);
+                    
+                    // 切换显示/隐藏
+                    commentsSection.classList.toggle('show');
+                    
+                    // 切换图标样式
+                    const icon = this.querySelector('i');
+                    if (commentsSection.classList.contains('show')) {
+                        icon.classList.remove('bi-chat');
+                        icon.classList.add('bi-chat-fill', 'text-primary');
+                    } else {
+                        icon.classList.remove('bi-chat-fill', 'text-primary');
+                        icon.classList.add('bi-chat');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

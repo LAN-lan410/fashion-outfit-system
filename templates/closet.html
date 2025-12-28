@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能衣橱 - 时尚穿搭系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- 页面自定义背景接口 -->
+    <style>
+        :root {
+            --bg-image: url('/static/images/bg_default.jpg');
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">✨ 时尚穿搭系统</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon text-white"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+    <li class="nav-item">
+        <a class="nav-link" href="/closet">智能衣橱</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/match">智能搭配</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/community">穿搭社区</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/tips">穿搭心得</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/profile">个人主页</a>
+    </li>
+               <li class="nav-item">
+    <a class="nav-link" href="/weather">天气穿搭</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/calendar">穿搭日历</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/wishlist">愿望单</a>
+</li>
+    <li class="nav-item">
+        <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"></i> 登出</a>
+    </li>
+
+</ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 智能衣橱内容 -->
+    <div class="closet-container">
+        <!-- 提示信息 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- 服装上传表单 -->
+        <div class="card upload-form">
+            <div class="card-header">
+                <i class="bi bi-cloud-upload"></i> 上传新服装
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="file" class="form-label">服装图片</label>
+                            <input type="file" class="form-control" id="file" name="file" accept="image/*" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="category" class="form-label">服装品类 <span class="text-danger">*</span></label>
+                            <select class="form-control" id="category" name="category" required>
+                                <option value="">请选择品类</option>
+                                <option value="上衣">上衣</option>
+                                <option value="下装">下装</option>
+                                <option value="裙子">裙子</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">风格标签 <span class="text-muted">(可多选)</span></label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="style" id="style1" value="甜酷风">
+                            <label class="form-check-label" for="style1">甜酷风</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="style" id="style2" value="通勤">
+                            <label class="form-check-label" for="style2">通勤</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="style" id="style3" value="休闲">
+                            <label class="form-check-label" for="style3">休闲</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="style" id="style4" value="约会">
+                            <label class="form-check-label" for="style4">约会</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> 加入衣橱
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 上衣分类 -->
+        <div class="closet-category">
+            <h4><i class="bi bi-jacket"></i> 上衣</h4>
+            {% if tops %}
+                <div class="closet-grid">
+                    {% for item in tops %}
+                        <div class="closet-item">
+                            <img src="{{ item.img }}" alt="上衣">
+                            <h6>上衣</h6>
+                            <div class="closet-tags">
+                                {% for style in item.style %}
+                                    <span class="tag">{{ style }}</span>
+                                {% endfor %}
+                            </div>
+                            <small class="text-muted">{{ item.upload_time }}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-light text-center">
+                    <i class="bi bi-info-circle"></i> 暂无上衣，快去上传吧！
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- 下装分类 -->
+        <div class="closet-category">
+            <h4><i class="bi bi-pants"></i> 下装</h4>
+            {% if bottoms %}
+                <div class="closet-grid">
+                    {% for item in bottoms %}
+                        <div class="closet-item">
+                            <img src="{{ item.img }}" alt="下装">
+                            <h6>下装</h6>
+                            <div class="closet-tags">
+                                {% for style in item.style %}
+                                    <span class="tag">{{ style }}</span>
+                                {% endfor %}
+                            </div>
+                            <small class="text-muted">{{ item.upload_time }}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-light text-center">
+                    <i class="bi bi-info-circle"></i> 暂无下装，快去上传吧！
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- 裙子分类 -->
+        <div class="closet-category">
+            <h4><i class="bi bi-dress"></i> 裙子</h4>
+            {% if skirts %}
+                <div class="closet-grid">
+                    {% for item in skirts %}
+                        <div class="closet-item">
+                            <img src="{{ item.img }}" alt="裙子">
+                            <h6>裙子</h6>
+                            <div class="closet-tags">
+                                {% for style in item.style %}
+                                    <span class="tag">{{ style }}</span>
+                                {% endfor %}
+                            </div>
+                            <small class="text-muted">{{ item.upload_time }}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-light text-center">
+                    <i class="bi bi-info-circle"></i> 暂无裙子，快去上传吧！
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

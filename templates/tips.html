@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>穿搭心得 - 时尚穿搭系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --bg-image: url('/static/images/bg_default.jpg');
+        }
+
+        .tip-card {
+            transition: transform 0.2s;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .tip-category {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .tip-content {
+            max-height: 100px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .tip-content.expanded {
+            max-height: none;
+        }
+
+        .read-more {
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">✨ 时尚穿搭系统</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon text-white"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/closet">智能衣橱</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/match">智能搭配</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/community">穿搭社区</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/tips">穿搭心得</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile">个人主页</a>
+                    </li>
+                    <li class="nav-item">
+    <a class="nav-link" href="/weather">天气穿搭</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/calendar">穿搭日历</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/wishlist">愿望单</a>
+</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"></i> 登出</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 穿搭心得内容 -->
+    <div class="container mt-4">
+        <!-- 提示信息 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- 页眉 -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="bi bi-journal-text text-primary"></i> 我的穿搭心得</h2>
+            <a href="/tips/add" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> 添加心得
+            </a>
+        </div>
+
+        <!-- 分类筛选 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5><i class="bi bi-tags"></i> 分类浏览</h5>
+                <div class="d-flex flex-wrap gap-2 mt-2">
+                    <a href="/tips" class="btn btn-outline-primary btn-sm">全部</a>
+                    {% for category in categories %}
+                        <form method="GET" action="/tips" style="display: inline;">
+                            <input type="hidden" name="category" value="{{ category }}">
+                            <button type="submit" class="btn btn-outline-secondary btn-sm">{{ category }}</button>
+                        </form>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- 心得列表 -->
+        {% if tips %}
+            <div class="row">
+                {% for tip in tips %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card tip-card h-100">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div>
+                                    {% if tip.is_public %}
+                                        <span class="badge bg-success">公开</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">私密</span>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">{{ tip.time }}</small>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ tip.title }}</h5>
+
+                                {% if tip.category %}
+                                    <span class="tip-category" style="background-color: #e3f2fd; color: #1976d2;">
+                                        {{ tip.category }}
+                                    </span>
+                                {% endif %}
+
+                                <div class="tip-content mt-3" id="content-{{ tip.id }}">
+                                    {{ tip.content|replace('\n', '<br>')|safe }}
+                                </div>
+
+                                {% if tip.content|length > 100 %}
+                                    <a href="javascript:void(0)" class="read-more" data-tip-id="{{ tip.id }}">展开更多</a>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer bg-transparent border-top-0">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <i class="bi bi-heart text-danger"></i>
+                                        <small class="text-muted">{{ tip.likes }}</small>
+                                        <i class="bi bi-chat ms-2 text-info"></i>
+                                        <small class="text-muted">{{ tip.comments|length }}</small>
+                                    </div>
+                                    <div>
+                                        <a href="/tips/edit/{{ tip.id }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="bi bi-journal-text display-1 text-muted"></i>
+                    <h4 class="mt-3 text-muted">暂无穿搭心得</h4>
+                    <p class="text-muted">记录你的穿搭技巧和经验，让时尚更有章法</p>
+                    <a href="/tips/add" class="btn btn-primary mt-2">
+                        <i class="bi bi-plus-circle"></i> 开始记录心得
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 展开/收起内容
+        document.querySelectorAll('.read-more').forEach(link => {
+            link.addEventListener('click', function() {
+                const tipId = this.getAttribute('data-tip-id');
+                const content = document.getElementById(`content-${tipId}`);
+
+                if (content.classList.contains('expanded')) {
+                    content.classList.remove('expanded');
+                    this.textContent = '展开更多';
+                } else {
+                    content.classList.add('expanded');
+                    this.textContent = '收起';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

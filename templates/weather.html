@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天气穿搭 - 时尚穿搭系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            /* 高级粉色系配色（莫兰迪粉） */
+            --primary-pink: #f472b6;    /* 主粉（柔玫粉） */
+            --secondary-pink: #f9a8d4;  /* 次粉（浅粉） */
+            --light-pink: #fef2f2;      /* 超浅粉（背景） */
+            --dark-pink: #be185d;       /* 深粉（强调） */
+            --accent-pink: #ec4899;     /* 亮粉（交互） */
+            --text-dark: #374151;       /* 文字深色 */
+            --text-light: #6b7280;      /* 文字浅色 */
+            
+            /* 阴影/过渡 */
+            --card-shadow: 0 8px 24px rgba(244, 114, 182, 0.08);
+            --hover-shadow: 0 12px 28px rgba(244, 114, 182, 0.15);
+            --btn-shadow: 0 4px 12px rgba(236, 72, 153, 0.25);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background-color: var(--light-pink);
+            font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* 导航栏极致美化 */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-pink) 100%) !important;
+            box-shadow: 0 4px 20px rgba(244, 114, 182, 0.15);
+            padding: 0.8rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar-brand i {
+            font-size: 1.6rem;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            margin: 0 8px;
+            padding: 8px 12px !important;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white !important;
+        }
+
+        /* 卡片极致美化 */
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            overflow: hidden;
+            background: white;
+        }
+
+        .card:hover {
+            box-shadow: var(--hover-shadow);
+            transform: translateY(-4px);
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 1px solid #fce7f3;
+            padding: 1.2rem 1.5rem;
+            font-weight: 600;
+            color: var(--dark-pink);
+            font-size: 1.1rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* 天气卡片专属样式 */
+        .weather-card {
+            background: linear-gradient(135deg, #fff 0%, var(--light-pink) 100%);
+            border: 1px solid #fce7f3;
+        }
+
+        .weather-icon {
+            font-size: 4.5rem;
+            filter: drop-shadow(0 6px 4px rgba(244, 114, 182, 0.1));
+            position: relative;
+        }
+
+        .weather-icon::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(244, 114, 182, 0.05);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .temp-large {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-pink), var(--accent-pink));
+            /* 兼容修复 */
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        /* 穿搭建议渐变卡片 */
+        .weather-suggestion {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-pink) 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .weather-suggestion::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0 0 0 100px;
+        }
+
+        .weather-suggestion h4, .weather-suggestion h5 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .weather-suggestion h4 i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* 表单控件极致美化 */
+        .form-control, .form-select {
+            border-radius: 12px;
+            border: 1px solid #fce7f3;
+            padding: 12px 18px;
+            transition: var(--transition);
+            font-size: 1rem;
+            background: white;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-pink);
+            box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.1);
+            outline: none;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        /* 按钮极致美化 */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-pink) 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: var(--btn-shadow);
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);
+            background: linear-gradient(135deg, var(--accent-pink) 0%, var(--dark-pink) 100%);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.25);
+        }
+
+        /* 提示信息美化 */
+        .alert {
+            border-radius: 12px;
+            border: none;
+            box-shadow: var(--card-shadow);
+            padding: 1rem 1.5rem;
+        }
+
+        .alert-info {
+            background: #fdf2f8;
+            color: var(--dark-pink);
+            border-left: 4px solid var(--primary-pink);
+        }
+
+        .alert-danger {
+            background: #fee2e2;
+            color: #dc2626;
+            border-left: 4px solid #ef4444;
+        }
+
+        /* 适配移动端 */
+        @media (max-width: 768px) {
+            .weather-icon {
+                font-size: 3.5rem;
+            }
+            .temp-large {
+                font-size: 2.8rem;
+            }
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+            .card-body {
+                padding: 1rem;
+            }
+            .weather-suggestion {
+                padding: 1.5rem;
+            }
+        }
+
+        /* 加载动画升级 */
+        .loader {
+            border: 4px solid #fce7f3;
+            border-top: 4px solid var(--primary-pink);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1.2s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 穿搭建议项极致美化 */
+        .outfit-item {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            transition: var(--transition);
+            margin-bottom: 12px !important;
+            backdrop-filter: blur(4px);
+        }
+
+        .outfit-item:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .outfit-item i {
+            font-size: 1.4rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+
+        /* 小贴士美化 */
+        .list-unstyled li {
+            padding: 4px 0;
+        }
+
+        .list-unstyled li i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* 间距优化 */
+        .mb-4 {
+            margin-bottom: 1.8rem !important;
+        }
+
+        .mt-4 {
+            margin-top: 1.8rem !important;
+        }
+
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-pink);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-pink);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-pink);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-star-fill"></i> 时尚穿搭系统
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon text-white"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/closet">智能衣橱</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/match">智能搭配</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/community">穿搭社区</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tips">穿搭心得</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/weather">天气穿搭</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/calendar">穿搭日历</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/wishlist">愿望单</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile">个人主页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">
+                            <i class="bi bi-box-arrow-right"></i> 登出
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 天气穿搭内容 -->
+    <div class="container mt-5">
+        <!-- 提示信息 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- 页面标题 -->
+                <div class="text-center mb-5">
+                    <h2 style="color: var(--dark-pink); font-weight: 700;">
+                        <i class="bi bi-cloud-sun-fill me-2"></i> 智能天气穿搭
+                    </h2>
+                    <p class="text-muted">根据实时天气，为你推荐专属穿搭方案</p>
+                </div>
+
+                <!-- 天气查询表单 -->
+                <div class="card mb-5">
+                    <div class="card-header">
+                        <h4 class="mb-0">
+                            <i class="bi bi-search me-2"></i> 城市天气查询
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <div class="col-md-8">
+                                <label for="city" class="form-label">城市名称</label>
+                                <input type="text" class="form-control" id="city" 
+                                       value="北京" placeholder="请输入城市名称（如北京、上海）">
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button id="getAdviceBtn" class="btn btn-primary w-100">
+                                    <i class="bi bi-magic me-2"></i> 获取穿搭建议
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 加载中提示 -->
+                <div id="loading" class="text-center py-5" style="display: none;">
+                    <div class="loader mb-3"></div>
+                    <p class="text-muted fs-5">正在为你获取最新天气数据...</p>
+                </div>
+
+                <!-- 错误提示 -->
+                <div id="errorCard" class="alert alert-danger" style="display: none;"></div>
+
+                <!-- 天气信息和穿搭建议 -->
+                <div id="weatherContent" style="display: none;">
+                    <!-- 天气卡片 -->
+                    <div class="weather-card card mb-5">
+                        <div class="card-body text-center">
+                            <div class="row align-items-center gy-4">
+                                <div class="col-md-4">
+                                    <div id="weatherIcon" class="weather-icon text-warning">
+                                        <i class="bi bi-sun-fill"></i>
+                                    </div>
+                                    <h5 class="mt-3 text-dark fw-semibold" id="weatherCondition">晴天</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="temp-large" id="temperature">-2°C</div>
+                                    <p class="text-muted mb-1">温度范围: <span id="tempRange">-5°C ~ 1°C</span></p>
+                                    <p class="text-muted mb-0">相对湿度: <span id="humidity">71%</span></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5 class="text-dark fw-semibold" id="cityName">北京市</h5>
+                                    <p class="text-muted" id="reportTime">2025-12-28 20:37:58</p>
+                                    <p class="text-muted small">风力等级: <span id="windSpeed">≤3级</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 穿搭建议 -->
+                    <div class="weather-suggestion mb-5">
+                        <h4>
+                            <i class="bi bi-lightbulb-fill"></i> 今日穿搭建议
+                        </h4>
+                        <div id="adviceList" class="mb-4">
+                            <!-- 动态生成的穿搭建议 -->
+                        </div>
+
+                        <h5>
+                            <i class="bi bi-shirt"></i> 推荐穿搭单品
+                        </h5>
+                        <div id="outfitRecommendations">
+                            <!-- 动态生成的穿搭单品 -->
+                        </div>
+                    </div>
+
+                    <!-- 天气说明 -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h6 class="mb-0">
+                                <i class="bi bi-info-circle me-2"></i> 穿搭小贴士
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <h6 class="text-primary-pink fw-semibold mb-3" style="color: var(--dark-pink);">
+                                        <i class="bi bi-thermometer-half me-1"></i> 温度穿搭指南
+                                    </h6>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <i class="bi bi-thermometer-high text-danger me-2"></i> 
+                                            <strong>30°C+</strong>：轻便透气，优先棉质面料
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-thermometer-half text-warning me-2"></i> 
+                                            <strong>20-30°C</strong>：单层衣物，适合叠穿
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-thermometer-quarter text-info me-2"></i> 
+                                            <strong>10-20°C</strong>：薄外套，注意早晚温差
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-thermometer-low text-primary me-2"></i> 
+                                            <strong>0-10°C</strong>：厚外套，多层保暖
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-thermometer-snow text-secondary me-2"></i> 
+                                            <strong>0°C-</strong>：羽绒服，全身保暖
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-primary-pink fw-semibold mb-3" style="color: var(--dark-pink);">
+                                        <i class="bi bi-cloud me-1"></i> 天气注意事项
+                                    </h6>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <i class="bi bi-cloud-rain text-info me-2"></i> 
+                                            <strong>雨天</strong>：防水材质，防滑鞋履
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-wind text-muted me-2"></i> 
+                                            <strong>大风</strong>：避免宽松，选择防风款
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-snow text-primary me-2"></i> 
+                                            <strong>雪天</strong>：加厚保暖，防滑鞋底
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-sun text-warning me-2"></i> 
+                                            <strong>晴天</strong>：防晒为主，透气舒适
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-cloud text-secondary me-2"></i> 
+                                            <strong>阴天</strong>：亮色穿搭，提升气色
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 默认提示 -->
+                <div id="defaultTip" class="alert alert-info text-center py-5">
+                    <i class="bi bi-info-circle fs-3 mb-3"></i>
+                    <h5 class="mt-2">输入城市名称，获取专属穿搭建议</h5>
+                    <p class="mb-0 text-muted">基于实时天气数据，为你推荐最合适的穿搭方案</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 根据天气状况匹配图标和颜色
+        function getWeatherIconConfig(condition) {
+            condition = condition.toLowerCase();
+            if (condition.includes('晴')) {
+                return { icon: 'bi-sun-fill', color: 'text-warning' };
+            } else if (condition.includes('云') || condition.includes('阴')) {
+                return { icon: 'bi-cloud-fill', color: 'text-secondary' };
+            } else if (condition.includes('雨')) {
+                return { icon: 'bi-cloud-rain-fill', color: 'text-info' };
+            } else if (condition.includes('雪')) {
+                return { icon: 'bi-snow', color: 'text-primary' };
+            } else if (condition.includes('风')) {
+                return { icon: 'bi-wind', color: 'text-muted' };
+            } else if (condition.includes('霾') || condition.includes('雾')) {
+                return { icon: 'bi-cloud-haze-fill', color: 'text-secondary' };
+            } else {
+                return { icon: 'bi-cloud-sun', color: 'text-success' };
+            }
+        }
+
+        // 生成穿搭单品推荐
+        function generateOutfitRecommendations(temp) {
+            const outfitContainer = document.getElementById('outfitRecommendations');
+            outfitContainer.innerHTML = '';
+            
+            let outfits = [];
+            if (temp >= 30) {
+                outfits = [
+                    { type: '上衣', name: '短袖T恤/连衣裙', reason: '透气吸汗，优先棉质面料' },
+                    { type: '下装', name: '短裤/半身裙', reason: '宽松舒适，便于散热' },
+                    { type: '鞋子', name: '凉鞋/帆布鞋', reason: '透气不闷脚' },
+                    { type: '配饰', name: '遮阳帽/太阳镜', reason: '防晒必备' }
+                ];
+            } else if (temp >= 20) {
+                outfits = [
+                    { type: '上衣', name: '长袖衬衫/薄针织衫', reason: '轻薄透气，适合日常' },
+                    { type: '下装', name: '休闲裤/牛仔裤', reason: '舒适百搭' },
+                    { type: '外套', name: '薄风衣/防晒衣', reason: '早晚温差备用' },
+                    { type: '鞋子', name: '板鞋/乐福鞋', reason: '轻便舒适' }
+                ];
+            } else if (temp >= 10) {
+                outfits = [
+                    { type: '上衣', name: '毛衣/加绒卫衣', reason: '保暖不厚重' },
+                    { type: '下装', name: '加绒裤/厚牛仔裤', reason: '防风保暖' },
+                    { type: '外套', name: '夹克/薄羽绒服', reason: '抵御微凉天气' },
+                    { type: '鞋子', name: '运动鞋/马丁靴', reason: '保暖防滑' }
+                ];
+            } else if (temp >= 0) {
+                outfits = [
+                    { type: '上衣', name: '保暖内衣/厚毛衣', reason: '内层保暖' },
+                    { type: '下装', name: '加绒裤/棉裤', reason: '腿部保暖' },
+                    { type: '外套', name: '羽绒服/呢大衣', reason: '外层防风保暖' },
+                    { type: '配饰', name: '围巾/手套', reason: '颈部手部保暖' }
+                ];
+            } else {
+                outfits = [
+                    { type: '上衣', name: '加厚保暖内衣/羊绒衫', reason: '极致保暖' },
+                    { type: '下装', name: '加厚棉裤/羽绒裤', reason: '抵御严寒' },
+                    { type: '外套', name: '长款厚羽绒服', reason: '全身保暖' },
+                    { type: '鞋子', name: '雪地靴/加绒棉鞋', reason: '防滑保暖' },
+                    { type: '配饰', name: '雷锋帽/厚手套/护耳', reason: '头部保暖关键' }
+                ];
+            }
+
+            // 渲染穿搭单品
+            outfits.forEach(item => {
+                let iconClass = 'bi-jacket';
+                if (item.type === '上衣') iconClass = 'bi-jacket';
+                else if (item.type === '下装') iconClass = 'bi-pants';
+                else if (item.type === '外套') iconClass = 'bi-tshirt';
+                else if (item.type === '鞋子') iconClass = 'bi-shoe-prints';
+                else if (item.type === '配饰') iconClass = 'bi-glasses';
+
+                const html = `
+                    <div class="d-flex align-items-center p-3 outfit-item">
+                        <div class="me-3">
+                            <i class="bi ${iconClass} text-white fs-4"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <strong>${item.name}</strong>
+                            <p class="mb-0 text-white-80 small">${item.reason}</p>
+                        </div>
+                    </div>
+                `;
+                outfitContainer.innerHTML += html;
+            });
+        }
+
+        // 获取天气和穿搭建议
+        async function getWeatherAdvice() {
+            // 元素获取
+            const city = document.getElementById('city').value.trim();
+            const loading = document.getElementById('loading');
+            const errorCard = document.getElementById('errorCard');
+            const weatherContent = document.getElementById('weatherContent');
+            const defaultTip = document.getElementById('defaultTip');
+            
+            // 初始化状态
+            loading.style.display = 'block';
+            errorCard.style.display = 'none';
+            weatherContent.style.display = 'none';
+            defaultTip.style.display = 'none';
+
+            // 验证输入
+            if (!city) {
+                loading.style.display = 'none';
+                errorCard.textContent = '请输入有效的城市名称（如北京、上海）';
+                errorCard.style.display = 'block';
+                return;
+            }
+
+            try {
+                // 调用后端API
+                const response = await fetch(`/api/weather-advice?city=${encodeURIComponent(city)}`);
+                if (!response.ok) {
+                    throw new Error(`请求失败（状态码：${response.status}）`);
+                }
+                const result = await response.json();
+
+                // 处理无天气数据的情况
+                if (!result.weather) {
+                    loading.style.display = 'none';
+                    errorCard.textContent = result.advice[0];
+                    errorCard.style.display = 'block';
+                    return;
+                }
+
+                // 解析天气数据
+                const weather = result.weather;
+                const iconConfig = getWeatherIconConfig(weather.condition);
+                
+                // 更新天气卡片
+                document.getElementById('weatherIcon').className = `weather-icon ${iconConfig.color}`;
+                document.getElementById('weatherIcon').innerHTML = `<i class="bi ${iconConfig.icon}"></i>`;
+                document.getElementById('weatherCondition').textContent = weather.condition;
+                document.getElementById('temperature').textContent = `${weather.temperature}°C`;
+                document.getElementById('tempRange').textContent = `${weather.temperature-3}°C ~ ${weather.temperature+3}°C`;
+                document.getElementById('humidity').textContent = `${weather.humidity}%`;
+                document.getElementById('cityName').textContent = weather.city;
+                document.getElementById('windSpeed').textContent = `${weather.wind_speed}级`;
+                
+                // 格式化时间
+                const reportTime = new Date().toLocaleString('zh-CN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                document.getElementById('reportTime').textContent = reportTime;
+
+                // 更新穿搭建议列表
+                const adviceList = document.getElementById('adviceList');
+                adviceList.innerHTML = '';
+                result.advice.forEach(advice => {
+                    adviceList.innerHTML += `<p class="mb-2 fs-6">${advice}</p>`;
+                });
+
+                // 生成穿搭单品推荐
+                generateOutfitRecommendations(weather.temperature);
+
+                // 显示内容
+                loading.style.display = 'none';
+                weatherContent.style.display = 'block';
+
+            } catch (error) {
+                // 错误处理
+                loading.style.display = 'none';
+                errorCard.textContent = `获取数据失败：${error.message}，请检查网络或城市名称`;
+                errorCard.style.display = 'block';
+                console.error('请求错误：', error);
+            }
+        }
+
+        // 绑定按钮点击事件
+        document.getElementById('getAdviceBtn').addEventListener('click', getWeatherAdvice);
+
+        // 页面加载时自动获取北京数据
+        window.onload = function() {
+            if (document.getElementById('city').value.trim() === '北京') {
+                getWeatherAdvice();
+            }
+        };
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

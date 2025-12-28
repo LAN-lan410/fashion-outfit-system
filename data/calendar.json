@@ -1,0 +1,261 @@
+{
+  "fashionista": {
+    "outfits": [
+      {
+        "id": 1,
+        "date": "2025-12-20",
+        "description": "银灰色毛绒外套蓬松又柔软，裹着深灰色长围巾挡风，下搭黑色百褶短裙与堆堆袜靴，毛茸茸的质感像抱着暖乎乎的抱枕，随性又带点甜酷",
+        "styles": [
+          "复古",
+          "甜酷风"
+        ],
+        "weather": "多云",
+        "temperature": "4℃",
+        "mood": "轻松自在",
+        "image_url": "/static/images/uploads/时尚达人图片1.png",
+        "created_at": "2025-12-20 09:00:00"
+      },
+      {
+        "id": 2,
+        "date": "2025-12-21",
+        "description": "藏青色毛领派克羽绒服裹得严严实实，内搭灰色高领毛衣贴肤保暖，黑色紧身皮裤显瘦又利落，脚踩卡其色毛边雪地靴，手拎米白针织开衫，浅卡其托特包装着随身物，暖得刚好又清爽",
+        "styles": [
+          "休闲",
+          "保暖"
+        ],
+        "weather": "晴",
+        "temperature": "2℃",
+        "mood": "温暖惬意",
+        "image_url": "/static/images/uploads/时尚达人图片2.png",
+        "created_at": "2025-12-21 08:30:00"
+      },
+      {
+        "id": 3,
+        "date": "2025-12-22",
+        "description": "深灰色长款双面呢大衣垂坠感十足，内搭同色系长裙+白色袖口打底衫，浅蓝针织围巾裹住颈间凉意，配同色系针织手套，肩挎拼色托特包，脚踩黑色厚底乐福鞋，通勤路上自带温柔气场",
+        "styles": [
+          "简约",
+          "通勤"
+        ],
+        "weather": "阴",
+        "temperature": "3℃",
+        "mood": "从容自信",
+        "image_url": "/static/images/uploads/时尚达人图片3.png",
+        "created_at": "2025-12-22 09:15:00"
+      },
+      {
+        "id": 4,
+        "date": "2025-12-23",
+        "description": "浅灰色轻薄羽绒服叠穿灰色连帽卫衣，内搭白色打底露出边边更有层次，下搭深蓝色阔腿牛仔裤松弛舒适，肩挎同色系斜挎包，脚踩蓝白拼色帆布鞋，出门逛街既暖又清爽",
+        "styles": [
+          "休闲",
+          "日常"
+        ],
+        "weather": "晴",
+        "temperature": "5℃",
+        "mood": "轻快愉悦",
+        "image_url": "/static/images/uploads/时尚达人图片4.png",
+        "created_at": "2025-12-23 08:45:00"
+      },
+      {
+        "id": 5,
+        "date": "2025-12-24",
+        "description": "黑色毛绒短款外套缀着金属扣很有质感，颈间缠豹纹丝巾添了点复古味，下搭深灰色阔腿卫裤松快不束缚，肩挎豹纹拼色包呼应细节，脚踩黑白帆布鞋，随性中带着点酷",
+        "styles": [
+          "甜酷风",
+          "复古"
+        ],
+        "weather": "大风",
+        "temperature": "1℃",
+        "mood": "随性自在",
+        "image_url": "/static/images/uploads/时尚达人图片5.png",
+        "created_at": "2025-12-24 09:00:00"
+      },
+      {
+        "id": 6,
+        "date": "2025-12-25",
+        "description": "黑色短款针织开衫裹着白色娃娃领内搭，下搭米白色网纱长裙像裹了层软云，手拎黑色绒面手提包精致小巧，脚踩黑白色玛丽珍鞋+白色中筒袜，甜得刚刚好",
+        "styles": [
+          "约会",
+          "甜美"
+        ],
+        "weather": "晴",
+        "temperature": "6℃",
+        "mood": "温柔甜意",
+        "image_url": "/static/images/uploads/时尚达人图片6.png",
+        "created_at": "2025-12-25 08:30:00"
+      },
+      {
+        "id": 7,
+        "date": "2025-12-26",
+        "description": "米白色绞花毛衣软乎乎贴肤暖，下搭军绿色阔腿裤卷边露出脚踝更利落，头戴同色系针织帽挡风，肩挎透明拼色包带点潮味，脚踩姜黄色厚底靴，出门散步舒服又有范儿",
+        "styles": [
+          "休闲",
+          "复古"
+        ],
+        "weather": "多云",
+        "temperature": "4℃",
+        "mood": "松弛惬意",
+        "image_url": "/static/images/uploads/时尚达人图片7.png",
+        "created_at": "2025-12-26 09:15:00"
+      },
+      {
+        "id": 8,
+        "date": "2025-12-27",
+        "description": "黑色短款毛呢大衣利落又复古，内搭同色系长款半身裙垂感十足，颈间裹着黑色流苏围巾添了细节，肩挎带玩偶挂饰的棕包软萌可爱，整体暗调穿搭却藏着温柔感",
+        "styles": [
+          "简约",
+          "复古"
+        ],
+        "weather": "阴",
+        "temperature": "2℃",
+        "mood": "安静温柔",
+        "image_url": "/static/images/uploads/时尚达人图片8.png",
+        "created_at": "2025-12-27 08:45:00"
+      },
+      {
+        "id": 9,
+        "date": "2025-12-28",
+        "description": "浅蓝色连帽卫衣外搭白色毛绒围巾，软乎乎像抱着玩偶，下搭灰色百褶短裙+蕾丝内搭边边更甜，脚踩白色堆堆长靴裹住脚踝，肩挎毛绒包还挂着Hello Kitty挂饰，甜得软萌又舒服",
+        "styles": [
+          "甜酷风",
+          "日常"
+        ],
+        "weather": "晴",
+        "temperature": "3℃",
+        "mood": "软萌开心",
+        "image_url": "/static/images/uploads/时尚达人图片9.png",
+        "created_at": "2025-12-28 09:00:00"
+      },
+      {
+        "id": 10,
+        "date": "2025-12-29",
+        "description": "棕褐色短款外套领口袖口都裹着毛绒，颈间系白色蕾丝蝴蝶结添了甜意，下搭同色系百褶短裙+浅肤色丝袜，脚踩黑色厚底靴，肩挎棕包还挂着毛绒挂饰，娇俏又暖和",
+        "styles": [
+          "甜美",
+          "复古"
+        ],
+        "weather": "多云",
+        "temperature": "5℃",
+        "mood": "明媚娇俏",
+        "image_url": "/static/images/uploads/时尚达人图片10.png",
+        "created_at": "2025-12-29 08:30:00"
+      }
+    ]
+  },
+  "stylefan": {
+    "outfits": [
+      {
+        "id": 1,
+        "date": "2025-12-01",
+        "description": "蓝色收腰衬衫+深色阔腿牛仔裤+铆钉尖头鞋，通勤甜酷风",
+        "styles": ["通勤", "甜酷风"],
+        "weather": "多云",
+        "temperature": "8℃",
+        "mood": "relaxed",
+        "image_url": "/static/images/uploads/calendar_stylefan_20251201_01.png",
+        "created_at": "2025-12-01 09:15:22"
+      },
+      {
+        "id": 2,
+        "date": "2025-12-03",
+        "description": "白色菱格针织衫+浅灰毛领羽绒服+阔腿牛仔裤，休闲保暖",
+        "styles": ["休闲", "简约"],
+        "weather": "晴天",
+        "temperature": "10℃",
+        "mood": "happy",
+        "image_url": "/static/images/uploads/calendar_stylefan_20251203_02.png",
+        "created_at": "2025-12-03 08:40:15"
+      },
+      {
+        "id": 3,
+        "date": "2025-12-05",
+        "description": "黑白色蝴蝶结套装+玛丽珍鞋+珍珠配饰，复古约会风",
+        "styles": ["约会", "复古"],
+        "weather": "晴天",
+        "temperature": "6℃",
+        "mood": "confident",
+        "image_url": "/static/images/uploads/calendar_stylefan_20251205_03.png",
+        "created_at": "2025-12-05 10:20:33"
+      },
+      {
+        "id": 4,
+        "date": "2025-12-08",
+        "description": "浅蓝收腰衬衫+白色阔腿裤+白色运动鞋，简约通勤",
+        "styles": ["通勤", "简约"],
+        "weather": "雪天",
+        "temperature": "-2℃",
+        "mood": "casual",
+        "image_url": "/static/images/uploads/calendar_stylefan_20251208_04.png",
+        "created_at": "2025-12-08 07:50:18"
+      },
+      {
+        "id": 5,
+        "date": "2025-12-10",
+        "description": "棕色工装外套+格纹百褶裙+棕色短靴，甜酷复古",
+        "styles": ["甜酷风", "复古"],
+        "weather": "多云",
+        "temperature": "5℃",
+        "mood": "confident",
+        "image_url": "/static/images/uploads/calendar_stylefan_20251210_05.png",
+        "created_at": "2025-12-10 09:05:45"
+      },
+      {
+        "id": 6,
+        "date": "2025-12-12",
+        "description": "米白衬衫+棕色工装裤+千鸟格领带，复古通勤",
+        "styles": ["通勤", "复古"],
+        "weather": "大风",
+        "temperature": "3℃",
+        "mood": "happy",
+        "image_url": "/static/images/uploads/calendar_stylefan_20251212_06.png",
+        "created_at": "2025-12-12 08:30:27"
+      },
+      {
+        "id": 7,
+        "date": "2025-12-15",
+        "description": "粉色短款夹克+棕色阔腿裤+拼色包，休闲甜酷",
+        "styles": ["休闲", "甜酷风"],
+        "weather": "多云",
+        "temperature": "7℃",
+        "mood": "confident",
+        "image_url": "/static/images/uploads/calendar_stylefan_20251215_07.png",
+        "created_at": "2025-12-15 10:10:12"
+      },
+      {
+        "id": 8,
+        "date": "2025-12-18",
+        "description": "棕粉菱格开衫+黄色内搭+棕色短裙，温柔复古约会",
+        "styles": ["约会", "复古"],
+        "weather": "雨天",
+        "temperature": "4℃",
+        "mood": "relaxed",
+        "image_url": "/static/images/uploads/calendar_stylefan_20251218_08.png",
+        "created_at": "2025-12-18 09:25:55"
+      },
+      {
+        "id": 9,
+        "date": "2025-12-22",
+        "description": "黑色印花卫衣+浅灰工装裤+铆钉鞋，休闲甜酷",
+        "styles": ["休闲", "甜酷风"],
+        "weather": "大风",
+        "temperature": "0℃",
+        "mood": "casual",
+        "image_url": "/static/images/uploads/calendar_stylefan_20251222_09.png",
+        "created_at": "2025-12-22 08:15:38"
+      },
+      {
+        "id": 10,
+        "date": "2025-12-25",
+        "description": "卡其收腰风衣+黑色褶皱包+黑色短靴，复古通勤",
+        "styles": ["通勤", "复古"],
+        "weather": "晴天",
+        "temperature": "5℃",
+        "mood": "happy",
+        "image_url": "/static/images/uploads/calendar_stylefan_20251225_10.png",
+        "created_at": "2025-12-25 09:40:44"
+      }
+    ],
+    "settings": {}
+  }
+}
